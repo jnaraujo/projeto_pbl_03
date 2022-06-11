@@ -1,0 +1,7 @@
+teste 1
+cavalo 3
+mesa 3
+cavalo-marinho 1
+bom 1
+dia 1
+brasil 1
