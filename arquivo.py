@@ -16,11 +16,16 @@ def writeFile(path, text):
 
 
 def sanitize(text):
+    stopChars = list("?!.,;:()[]{}<>\"'`´")
     words = text.replace("\n", " ")
+
+    for char in stopChars:
+        words = words.replace(char, "")
+
     return words
 
 def textToList(text):
-    text = sanitize(text).strip()
+    text = sanitize(text).strip().lower()
 
     lista = text.split(" ")
 
@@ -40,10 +45,10 @@ def countDictToIndexFile(d, path):
         for key in d:
             f.write(key + " " + str(d[key]) + "\n")
 
-def saveIndexToFile(indexes, path):
-    filename = path.replace("/", "__")+".txt"
+def saveIndexToFile(indexes, filename, savepath):
+    filename = filename.replace("/", "__")+".txt"
 
-    with open(path+filename, "w") as f:
+    with open(savepath+filename, "w") as f:
         for key in indexes:
             f.write(key + " " + str(indexes[key]) + "\n")
 
@@ -55,9 +60,8 @@ def indexFileToDict(path):
     with open(path, "r") as f:
         for line in f:
             splitedLine = line.split(" ")
-            word, index = splitedLine[0], " ".join(splitedLine[1:])
-            print(word)
-            print(index)
+            word, lista = splitedLine[0], " ".join(splitedLine[1:])
+            d[word] = eval(lista)
     return d
 def readIndexFiles():
     path = getMainPath()+"/indices/"
@@ -69,3 +73,9 @@ def readIndexFiles():
             indexDict[file] = indexFileToDict(path+file)
 
     return indexDict
+
+def search(word, index):
+    if word in index:
+        return index[word][0]
+    else:
+        return []

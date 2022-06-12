@@ -47,7 +47,11 @@ def test2():
 def test_create_and_write_index():
     currentPath = arquivo.getMainPath()
 
-    arquivos = arquivo.getFoulderFilesPath(currentPath+"/pasta")
+
+    foulderPath = currentPath+"/pasta"
+    savePath = currentPath+"/indices/"
+
+    arquivos = arquivo.getFoulderFilesPath(foulderPath)
 
     wordsOfFile = {}
 
@@ -61,12 +65,41 @@ def test_create_and_write_index():
         countWords = arquivo.countWords(lista)
         for word, count in countWords.items():
             if word in wordsOfFile:
-                wordsOfFile[word].append((filename, count))
+                wordsOfFile[word].append((path, count))
             else:
-                wordsOfFile[word] = [(filename, count)]
+                wordsOfFile[word] = [(path, count)]
 
     # print(wordsOfFile)
-    arquivo.saveIndexToFile(wordsOfFile, currentPath+"/indices/")
+    arquivo.saveIndexToFile(wordsOfFile, foulderPath, savePath)
+
+def test_create_and_write_index_other_foulder():
+    currentPath = arquivo.getMainPath()
+
+    savePath = currentPath+"/indices/"
+    foulderPath = "/home/jnaraujo/Documentos/testefiles/"
+
+    arquivos = arquivo.getFoulderFilesPath(foulderPath)
+
+    print(arquivos)
+
+    wordsOfFile = {}
+
+    for path in arquivos:
+        filename = path.split("/")[-1]
+
+        texto = arquivo.readFile(path)
+
+        lista = arquivo.textToList(texto)
+        #wordsOfFile[filename]
+        countWords = arquivo.countWords(lista)
+        for word, count in countWords.items():
+            if word in wordsOfFile:
+                wordsOfFile[word].append((path, count))
+            else:
+                wordsOfFile[word] = [(path, count)]
+
+    # print(wordsOfFile)
+    arquivo.saveIndexToFile(wordsOfFile, foulderPath, savePath)
 
 def test_read_index():
     reversedIndex = {}
@@ -77,9 +110,22 @@ def test_read_index():
 
     for path in indexes:
         dicionario = arquivo.indexFileToDict(path)
-        print(dicionario)
 
-    print(indexes)
+        for word, lista in dicionario.items():
+            if word in reversedIndex:
+                reversedIndex[word].append(lista)
+            else:
+                reversedIndex[word] = [lista]
 
+    # print(reversedIndex)
+
+    res = arquivo.search("olá", reversedIndex)
+
+    print("Locais onde a palavra aparece:")
+    for item in res:
+        path, count = item
+        print(f"{path} - {count}x")
 if __name__ == '__main__':
+    # test_create_and_write_index()
+    # test_create_and_write_index_other_foulder()
     test_read_index()
