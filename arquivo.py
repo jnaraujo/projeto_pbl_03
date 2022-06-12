@@ -35,16 +35,37 @@ def countWords(lista):
             d[word] = 1     
     return d
 
-
 def countDictToIndexFile(d, path):
     with open(path, "w") as f:
         for key in d:
             f.write(key + " " + str(d[key]) + "\n")
 
+def saveIndexToFile(indexes, path):
+    filename = path.replace("/", "__")+".txt"
+
+    with open(path+filename, "w") as f:
+        for key in indexes:
+            f.write(key + " " + str(indexes[key]) + "\n")
+
+def indexFilenameToPath(filename):
+    return filename.replace("__", "/").replace(".txt", "")
+
 def indexFileToDict(path):
     d = {}
     with open(path, "r") as f:
         for line in f:
-            word, count = line.split(" ")
-            d[word] = int(count)
+            splitedLine = line.split(" ")
+            word, index = splitedLine[0], " ".join(splitedLine[1:])
+            print(word)
+            print(index)
     return d
+def readIndexFiles():
+    path = getMainPath()+"/indices/"
+
+    indexDict = {}
+
+    for file in os.listdir(path):
+        if file.endswith(".txt"):
+            indexDict[file] = indexFileToDict(path+file)
+
+    return indexDict
