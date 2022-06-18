@@ -8,7 +8,7 @@ def test2():
 
     assert currentPath == os.path.abspath(os.getcwd()), "Erro no caminho atual"
 
-    arquivos = arquivo.getFoulderFilesPath(currentPath+"/pasta")
+    arquivos = arquivo.getfolderFilesPath(currentPath+"/pasta")
 
     assert len(arquivos) == 2, "Erro no número de arquivos"
 
@@ -48,10 +48,10 @@ def test_create_and_write_index():
     currentPath = arquivo.getMainPath()
 
 
-    foulderPath = currentPath+"/pasta"
+    folderPath = currentPath+"/pasta"
     savePath = currentPath+"/indices/"
 
-    arquivos = arquivo.getFoulderFilesPath(foulderPath)
+    arquivos = arquivo.getfolderFilesPath(folderPath)
 
     wordsOfFile = {}
 
@@ -70,15 +70,16 @@ def test_create_and_write_index():
                 wordsOfFile[word] = [(path, count)]
 
     # print(wordsOfFile)
-    arquivo.saveIndexToFile(wordsOfFile, foulderPath, savePath)
+    arquivo.saveIndexToFile(wordsOfFile, folderPath, savePath)
 
-def test_create_and_write_index_other_foulder():
+def test_create_and_write_index_other_folder():
     currentPath = arquivo.getMainPath()
 
     savePath = currentPath+"/indices/"
-    foulderPath = "/home/jnaraujo/Documentos/testefiles/"
+    folderPath = "/home/jnaraujo/Documentos/testefiles/"
 
-    arquivos = arquivo.getFoulderFilesPath(foulderPath)
+
+    arquivos = arquivo.getfolderFilesPath(folderPath)
 
     print(arquivos)
 
@@ -99,14 +100,14 @@ def test_create_and_write_index_other_foulder():
                 wordsOfFile[word] = [(path, count)]
 
     # print(wordsOfFile)
-    arquivo.saveIndexToFile(wordsOfFile, foulderPath, savePath)
+    arquivo.saveIndexToFile(wordsOfFile, folderPath, savePath)
 
 def test_read_index():
     reversedIndex = {}
 
     currentPath = arquivo.getMainPath()
 
-    indexes = arquivo.getFoulderFilesPath(currentPath+"/indices")
+    indexes = arquivo.getfolderFilesPath(currentPath+"/indices")
 
     for path in indexes:
         dicionario = arquivo.indexFileToDict(path)
@@ -127,5 +128,5 @@ def test_read_index():
         print(f"{path} - {count}x")
 if __name__ == '__main__':
     # test_create_and_write_index()
-    # test_create_and_write_index_other_foulder()
+    # test_create_and_write_index_other_folder()
     test_read_index()

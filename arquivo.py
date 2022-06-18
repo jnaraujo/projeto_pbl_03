@@ -1,6 +1,10 @@
 import os
 
-def getFoulderFilesPath(path):
+
+def doesPathExists(path):
+    return os.path.exists(path) and not os.path.isfile(path)
+
+def getFolderFilesPath(path):
     return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
 
 def getMainPath():
@@ -46,14 +50,14 @@ def countDictToIndexFile(d, path):
             f.write(key + " " + str(d[key]) + "\n")
 
 def saveIndexToFile(indexes, filename, savepath):
-    filename = filename.replace("/", "__")+".txt"
+    filename = filename.replace("\\", "__").replace(":", "__")+".txt"
 
     with open(savepath+filename, "w") as f:
         for key in indexes:
             f.write(key + " " + str(indexes[key]) + "\n")
 
 def indexFilenameToPath(filename):
-    return filename.replace("__", "/").replace(".txt", "")
+    return filename.replace("__", "\\").replace(".txt", "")
 
 def indexFileToDict(path):
     d = {}
@@ -64,7 +68,7 @@ def indexFileToDict(path):
             d[word] = eval(lista)
     return d
 def readIndexFiles():
-    path = getMainPath()+"/indices/"
+    path = getMainPath()+"\indices\\"
 
     indexDict = {}
 
@@ -79,3 +83,12 @@ def search(word, index):
         return index[word][0]
     else:
         return []
+
+def removeIndexPath(folderPath, indexPath):
+    filename = folderPath.replace("\\", "__").replace(":", "__")+".txt"
+    path = indexPath+filename
+    if not doesPathExists(path):
+        return False
+
+    os.remove(path)
+    return True

@@ -1,0 +1,15 @@
+Uso
+    python3 main.py [opções]
+
+opções
+    --addDir         Adiciona um diretório ao banco de dados
+
+    --rmvDir         Remove um diretório do banco de dados
+    --rmvFile        Remove um arquivo do banco de dados-
+
+    --listDir        Lista os diretórios do banco de dados
+    --listFile       Lista os arquivos do banco de dados
+
+    --search         Busca uma palavra no banco de dados
+
+    --help           Mostra essa mensagem de ajuda
