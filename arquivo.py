@@ -11,11 +11,11 @@ def getMainPath():
     return os.path.abspath(os.getcwd())
 
 def readFile(path):
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 def writeFile(path, text):
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write(text)
 
 
@@ -45,14 +45,14 @@ def countWords(lista):
     return d
 
 def countDictToIndexFile(d, path):
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         for key in d:
             f.write(key + " " + str(d[key]) + "\n")
 
 def saveIndexToFile(indexes, filename, savepath):
     filename = filename.replace("\\", "__").replace(":", "__")+".txt"
 
-    with open(savepath+filename, "w") as f:
+    with open(savepath+filename, "w", encoding="utf-8") as f:
         for key in indexes:
             f.write(key + " " + str(indexes[key]) + "\n")
 
@@ -61,7 +61,7 @@ def indexFilenameToPath(filename):
 
 def indexFileToDict(path):
     d = {}
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         for line in f:
             splitedLine = line.split(" ")
             word, lista = splitedLine[0], " ".join(splitedLine[1:])
@@ -79,10 +79,28 @@ def readIndexFiles():
     return indexDict
 
 def search(word, index):
+
     if word in index:
-        return index[word][0]
+        return sortIndex(index[word])
     else:
         return []
+
+def sortIndex(arr):
+    arr = arr.copy()
+
+    isSorted = False
+
+    while not isSorted:
+        isSorted = True
+        for i in range(len(arr)-1):
+            current = arr[i]
+            next = arr[i+1]
+
+            if current[1] < next[1]:
+                arr[i], arr[i+1] = next, current
+                isSorted = False
+    return arr
+
 
 def removeIndexPath(folderPath, indexPath):
     filename = folderPath.replace("\\", "__").replace(":", "__")+".txt"
@@ -92,3 +110,17 @@ def removeIndexPath(folderPath, indexPath):
 
     os.remove(path)
     return True
+
+
+def indexNameToPath(name, indexPath):
+    path = name.replace(indexPath, "").replace(".txt", "") # remove o caminho do index e o .txt
+    path = path.replace("__", "\\") # troca os carecteres especiais
+    path = path.split("\\") # divide o caminho em um array
+
+    path[path.index("")] = ":" # no primeiro espaço em branco troca o caractere por :
+
+    disk = path[0] # pega o disco
+    path = "\\".join(path[1:]) # junta os outros itens do caminho
+
+    path = disk+path # junta o disco com o caminho
+    return path

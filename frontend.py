@@ -1,4 +1,3 @@
-from operator import index
 import arquivo
 
 
@@ -7,13 +6,14 @@ indexPath = currentPath+"\\indices\\" # local onde os indices serão armazenados
 
 HELP = ""
 
-def addDir(folderPath):
+def addDir(folderPath, output=True):
     folderPath = " ".join(folderPath)
 
     if not arquivo.doesPathExists(folderPath):
-        print("O diretório informado não existe.")
-        print("Verifique se o caminho passado está correto e tente novamente.")
-        print("Um exemplo de caminho válido: C:\\Users\\Antonio\\Documents\\pasta")
+        if output==True:
+            print("O diretório informado não existe.")
+            print("Verifique se o caminho passado está correto e tente novamente.")
+            print("Um exemplo de caminho válido: C:\\Users\\Antonio\\Documents\\pasta")
         return
 
     arquivos = arquivo.getFolderFilesPath(folderPath)
@@ -33,7 +33,20 @@ def addDir(folderPath):
                 palavrasDoArquivo[word] = [(path, count)]
     arquivo.saveIndexToFile(palavrasDoArquivo, folderPath, indexPath)
 
-    print("Diretório adicionado com sucesso!")
+    if output==True:
+        print("Diretório adicionado com sucesso!")
+
+def updateDirs():
+    indexes = arquivo.getFolderFilesPath(indexPath)
+    print("----------- Lista de Diretórios para Atualizar -----------")
+    for path in indexes:
+        folderPath = arquivo.indexNameToPath(path, indexPath)
+
+        print("Atualizando diretório: "+folderPath)
+        addDir([folderPath], output=False)
+        
+
+
 
 def removeDir(args):
     folderPath = " ".join(args)
@@ -64,8 +77,6 @@ def removeFile(args):
 
     folderIndex = indexPath+folderPathName
 
-   
-
     if folderIndex in indexes:
         dicionario = arquivo.indexFileToDict(folderIndex)
         
@@ -85,20 +96,86 @@ def removeFile(args):
     print("O arquivo informado não está no indice.")
     print("Verifique se o caminho passado está correto e tente novamente.")
     print("Você pode verificar todos os diretórios no indice com a opção --listDirs")
+def listDirs():
+    print("----------- Lista de Diterórios -----------")
+    indexes = arquivo.getFolderFilesPath(indexPath)
+    for index in indexes:
+        path = arquivo.indexNameToPath(index, indexPath)
+
+        print(path)
+
+def listFiles():
+    print("----------- Lista de Arquivos Indexados -----------")
+    indexes = arquivo.getFolderFilesPath(indexPath)
+
+    files = []
+    for path in indexes:
+        dicionario = arquivo.indexFileToDict(path)
+
+        for word, lista in dicionario.items():
+            for value in lista:
+                if value[0] not in files:
+                    files.append(value[0])
+
+    if len(files) == 0:
+        print("Não há arquivos indexados.")
+        print("Você pode adicionar arquivos com a opção --addDir")
+        return
+    
+    for file in files:
+        print(file)
+def search(args):
+    palavra = " ".join(args)
+
+    reversedIndex = {}
+    indexes = arquivo.getFolderFilesPath(indexPath)
+
+    for path in indexes:
+        dicionario = arquivo.indexFileToDict(path)
+        for word, lista in dicionario.items():
+            if word in reversedIndex:
+                reversedIndex[word].append(*lista)
+            else:
+                reversedIndex[word] = lista
+
+
+    res = arquivo.search(palavra, reversedIndex)
+
+    if len(res) == 0:
+        print("Não há arquivos com a palavra informada.")
+        return
+    else:
+        print(f"----------- Lista de Arquivos com a palavra {palavra} -----------")
+        for path, count in res:
+            print(f"{path} ({count}x)")
 
 def handleArgs(args):
-    if len(args) <= 1:
+
+    # comandos que nao precisam de argumentos adicionais
+    if args[0] == '--listDirs':
+        return listDirs()
+    elif args[0] == '--listFiles':
+        return listFiles()
+    elif args[0] == '--help':
+        return print(HELP) 
+    elif args[0] == '--updateDirs':
+        return updateDirs()
+
+    if len(args) <= 1: # se não houver argumentos adicinais
         return print(HELP)
 
     if args[0] == '--addDir':
-        addDir(args[1:])
+        return addDir(args[1:])
     elif args[0] == '--rmvDir':
-        removeDir(args[1:])
+        return removeDir(args[1:])
     elif args[0] == '--rmvFile':
-        removeFile(args[1:])
+        return removeFile(args[1:])
+    elif args[0] == '--search':
+        return search(args[1:])
+    
 
 def init(args):
-    with open(currentPath+"/help.txt", "r") as helpFile:
+    with open(currentPath+"/help.txt", "r", encoding="utf-8") as helpFile:
         global HELP
         HELP = helpFile.read()
     handleArgs(args)
