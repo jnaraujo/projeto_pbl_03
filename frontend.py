@@ -1,7 +1,9 @@
 import arquivo
 
+import os
+
 currentPath = arquivo.getMainPath() # path da main do projeto
-indexPath = currentPath+"\\indices\\" # local onde os indices serão armazenados
+indexPath = os.path.join(currentPath, "indices") # local onde os indices serão armazenados
 
 arquivo.doesIndexFolderExists(indexPath) # verifica se o diretório de indices existe
 
