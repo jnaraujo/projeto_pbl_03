@@ -2,16 +2,16 @@ Uso
     python3 main.py [opção]
 
 Opções
-    --addDir         Adiciona um diretório ao banco de dados
+    --addDir <caminho>      Adiciona um diretório ao índice
 
-    --rmvDir         Remove um diretório do banco de dados
-    --rmvFile        Remove um arquivo do banco de dados-
+    --rmvDir <caminho>      Remove um diretório ao índice
+    --rmvFile <caminho>     Remove um arquivo do índice
 
-    --listDirs       Lista os diretórios do banco de dados
-    --listFiles      Lista os arquivos do banco de dados
+    --listDirs       	    Lista os diretórios indexados
+    --listFiles      	    Lista os arquivos indexados
 
-    --updateDirs      Atualiza o banco de dados com os arquivos do diretório
+    --updateDirs     	    Atualiza o índice com diretórios já adicionados
 
-    --search         Busca uma palavra no banco de dados
+    --search <termo>	    Busca uma palavra no índice invertido
 
-    --help           Mostra essa mensagem de ajuda
+    --help           	    Mostra essa mensagem de ajuda
