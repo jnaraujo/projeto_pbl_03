@@ -3,6 +3,8 @@ import arquivo
 currentPath = arquivo.getMainPath() # path da main do projeto
 indexPath = currentPath+"\\indices\\" # local onde os indices serão armazenados
 
+arquivo.doesIndexFolderExists(indexPath) # verifica se o diretório de indices existe
+
 HELP = ""
 
 '''
@@ -43,6 +45,12 @@ def addDir(folderPath, output=True):
 '''
 def updateDirs():
     indexes = arquivo.getFolderFilesPath(indexPath) # pega todos os arquivos indexados
+
+    if len(indexes) == 0: # se não houver arquivos indexados
+        print("Não há arquivos indexados.")
+        print("Você pode adicionar arquivos com a opção --addDir")
+        return
+
     for path in indexes: # para cada arquivo indexado
         folderPath = arquivo.indexNameToPath(path, indexPath) # pega o path do diretório
 
