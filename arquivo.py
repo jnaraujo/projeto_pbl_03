@@ -1,118 +1,97 @@
 import os
 
 
-def doesPathExists(path):
-    return os.path.exists(path) and not os.path.isfile(path)
+def doesPathExists(path): # verifica se o caminho existe
+    return os.path.exists(path) and not os.path.isfile(path) # se o caminho existe e não é um arquivo
 
-def getFolderFilesPath(path):
-    return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+def getFolderFilesPath(path): # retorna todos os arquivos de um diretorio
+    return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))] # retorna todos os arquivos de um diretorio
 
-def getMainPath():
+def getMainPath(): # retorna o caminho do diretorio principal
     return os.path.abspath(os.getcwd())
 
-def readFile(path):
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
+def readFile(path): # le um arquivo e retorna o texto
+    with open(path, "r", encoding="utf-8") as f: # abre o arquivo
+        return f.read() # retorna o texto
 
-def writeFile(path, text):
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(text)
+def sanitize(text): # remove caracteres especiais
+    stopChars = list("?!.,;:()[]{}<>\"'`´") # caracteres que não devem ser considerados
+    words = text.replace("\n", " ") # substitui os \n por espaços
 
-
-def sanitize(text):
-    stopChars = list("?!.,;:()[]{}<>\"'`´")
-    words = text.replace("\n", " ")
-
-    for char in stopChars:
-        words = words.replace(char, "")
+    for char in stopChars: # remove os caracteres especiais
+        words = words.replace(char, "") # remove os caracteres especiais
 
     return words
 
-def textToList(text):
-    text = sanitize(text).strip().lower()
+def textToList(text): # transforma um texto em uma lista de palavras
+    text = sanitize(text).strip().lower() # remove caracteres especiais e transforma em minusculo
 
-    lista = text.split(" ")
+    lista = text.split(" ") # divide o texto em uma lista de palavras
 
-    return [word for word in lista if word != ""]
+    return [word for word in lista if word != ""] # retorna uma lista de palavras sem espaços em branco
 
-def countWords(lista):
-    d = {}
-    for word in lista:
-        if word in d:
-            d[word] += 1
-        else:
-            d[word] = 1     
+def countWords(lista): # conta o numero de palavras de uma lista
+    d = {} # dicionario de palavras
+    for word in lista: # para cada palavra da lista
+        if word in d: # se a palavra ja existe
+            d[word] += 1 # incrementa o numero de vezes que ela aparece
+        else: # se a palavra nao existe
+            d[word] = 1  # adiciona a palavra ao dicionario  
     return d
 
-def countDictToIndexFile(d, path):
-    with open(path, "w", encoding="utf-8") as f:
-        for key in d:
-            f.write(key + " " + str(d[key]) + "\n")
+def saveIndexToFile(indexes, filename, savepath): # salva o index em um arquivo
+    filename = filename.replace("\\", "__").replace(":", "__")+".txt" # troca os caracteres especiais
 
-def saveIndexToFile(indexes, filename, savepath):
-    filename = filename.replace("\\", "__").replace(":", "__")+".txt"
+    with open(savepath+filename, "w", encoding="utf-8") as f: # abre o arquivo
+        for key in indexes: # para cada chave do dicionario
+            f.write(key + " " + str(indexes[key]) + "\n") # escreve a chave e o valor no arquivo
 
-    with open(savepath+filename, "w", encoding="utf-8") as f:
-        for key in indexes:
-            f.write(key + " " + str(indexes[key]) + "\n")
+def indexFilenameToPath(filename): # retorna o caminho do arquivo de index
+    return filename.replace("__", "\\").replace(".txt", "") # troca os caracteres especiais
 
-def indexFilenameToPath(filename):
-    return filename.replace("__", "\\").replace(".txt", "")
-
-def indexFileToDict(path):
-    d = {}
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            splitedLine = line.split(" ")
-            word, lista = splitedLine[0], " ".join(splitedLine[1:])
-            d[word] = eval(lista)
+def indexFileToDict(path): # transforma um arquivo de index em um dicionario
+    d = {} # dicionario de palavras
+    with open(path, "r", encoding="utf-8") as f: # abre o arquivo
+        for line in f: # para cada linha do arquivo
+            splitedLine = line.split(" ") # divide a linha em um array
+            word, lista = splitedLine[0], " ".join(splitedLine[1:]) # pega a palavra e a lista de arquivos
+            d[word] = eval(lista) # transforma a lista de arquivos em um array
     return d
-def readIndexFiles():
-    path = getMainPath()+"\indices\\"
 
-    indexDict = {}
+def search(word, index): # busca um termo no index
+    if word in index: # se o termo existe
+        return sortIndex(index[word]) # retorna a lista de arquivos ordenada
+    else: # se o termo nao existe
+        return [] # retorna uma lista vazia
 
-    for file in os.listdir(path):
-        if file.endswith(".txt"):
-            indexDict[file] = indexFileToDict(path+file)
+def sortIndex(arr): # ordena um array de arquivos
+    arr = arr.copy() # copia o array
 
-    return indexDict
+    isSorted = False # flag para saber se o array esta ordenado
 
-def search(word, index):
+    while not isSorted: # enquanto o array nao estiver ordenado
+        isSorted = True # assume que o array esta ordenado
+        for i in range(len(arr)-1): # para cada item do array
+            current = arr[i] # pega o item atual
+            next = arr[i+1] # pega o item seguinte
 
-    if word in index:
-        return sortIndex(index[word])
-    else:
-        return []
-
-def sortIndex(arr):
-    arr = arr.copy()
-
-    isSorted = False
-
-    while not isSorted:
-        isSorted = True
-        for i in range(len(arr)-1):
-            current = arr[i]
-            next = arr[i+1]
-
-            if current[1] < next[1]:
-                arr[i], arr[i+1] = next, current
-                isSorted = False
+            if current[1] < next[1]: # se o item atual for maior que o seguinte
+                arr[i], arr[i+1] = next, current # troca os itens
+                isSorted = False # o array nao esta ordenado
     return arr
 
 
-def removeIndexPath(folderPath, indexPath):
-    filename = folderPath.replace("\\", "__").replace(":", "__")+".txt"
-    path = indexPath+filename
-    if not doesPathExists(path):
-        return False
+def removeIndexPath(folderPath, indexPath): # remove o caminho do index do caminho do diretorio
+    filename = folderPath.replace("\\", "__").replace(":", "__")+".txt" # troca os caracteres especiais
+    path = indexPath+filename # cria o caminho do arquivo
+    if not doesPathExists(path): # se o arquivo nao existe
+        return False 
 
-    os.remove(path)
+    os.remove(path) # remove o arquivo
     return True
 
 
-def indexNameToPath(name, indexPath):
+def indexNameToPath(name, indexPath): 
     path = name.replace(indexPath, "").replace(".txt", "") # remove o caminho do index e o .txt
     path = path.replace("__", "\\") # troca os carecteres especiais
     path = path.split("\\") # divide o caminho em um array

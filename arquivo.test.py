@@ -35,7 +35,7 @@ def test2():
     # dicionario = arquivo.indexFileToDict(currentPath+"/indices/indice.txt")
 
     # assert dicionario == cWords, "Erro na conversão de arquivo para dicionário"
-    indexFiles = arquivo.readIndexFiles()
+    # indexFiles = arquivo.readIndexFiles()
 
     print(indexFiles)
 
