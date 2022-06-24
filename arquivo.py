@@ -1,6 +1,11 @@
 import os
 
 
+def doesIndexFolderExists(indexPath): # verifica se o diretorio de index existe
+    if not doesPathExists(indexPath):
+        os.makedirs(indexPath)
+
+
 def doesPathExists(path): # verifica se o caminho existe
     return os.path.exists(path) and not os.path.isfile(path) # se o caminho existe e não é um arquivo
 
