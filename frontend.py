@@ -126,6 +126,10 @@ def removeFile(args):
 def listDirs():
     print("----------- Lista de Diterórios -----------")
     indexes = arquivo.getFolderFilesPath(indexPath)
+    if len(indexes) == 0:
+        print("Não há diretórios indexados.")
+        print("Você pode adicionar diretórios com a opção --addDir")
+        return
     for index in indexes:
         path = arquivo.indexNameToPath(index, indexPath)
         print(path)
@@ -148,7 +152,7 @@ def listFiles():
 
     if len(files) == 0: # se não houver arquivos indexados
         print("Não há arquivos indexados.")
-        print("Você pode adicionar arquivos com a opção --addDir")
+        print("Você pode adicionar diretórios com a opção --addDir")
         return
     
     for file in files: # para cada arquivo indexado
