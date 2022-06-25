@@ -97,7 +97,12 @@ def removeIndexPath(folderPath, indexPath): # remove o caminho do index do camin
 
 
 def indexNameToPath(name, indexPath): 
+
+    if not str(indexPath).endswith("\\"): # se o caminho nao termina com um \
+        indexPath += "\\" # adiciona um \ no final do caminho
+
     path = name.replace(indexPath, "").replace(".txt", "") # remove o caminho do index e o .txt
+
     path = path.replace("__", "\\") # troca os carecteres especiais
     path = path.split("\\") # divide o caminho em um array
 

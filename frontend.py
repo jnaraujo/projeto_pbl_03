@@ -3,7 +3,7 @@ import arquivo
 import os
 
 currentPath = arquivo.getMainPath() # path da main do projeto
-indexPath = os.path.join(currentPath, "indices") # local onde os indices serão armazenados
+indexPath = os.path.join(currentPath, "indices\\") # local onde os indices serão armazenados
 
 arquivo.doesIndexFolderExists(indexPath) # verifica se o diretório de indices existe
 
@@ -20,7 +20,7 @@ def addDir(folderPath, output=True):
             print("O diretório informado não existe.")
             print("Verifique se o caminho passado está correto e tente novamente.")
             print("Um exemplo de caminho válido: C:\\Users\\Antonio\\Documents\\pasta")
-        return
+        return 0
 
     arquivos = arquivo.getFolderFilesPath(folderPath) # pega todos os arquivos do diretório
 
@@ -37,10 +37,12 @@ def addDir(folderPath, output=True):
                 palavrasDoArquivo[word].append((path, count)) # adiciona o arquivo e o número de ocorrências
             else:
                 palavrasDoArquivo[word] = [(path, count)] # se não, adiciona a palavra e a lista de arquivos e o número de ocorrências
+    
     arquivo.saveIndexToFile(palavrasDoArquivo, folderPath, indexPath) # salva o dicionário no arquivo de indice
 
     if output==True: # se for para imprimir na tela
         print("Diretório adicionado com sucesso!")
+    return 1
 
 '''
     Função que atualiza o indice de todos os diretórios
@@ -56,8 +58,17 @@ def updateDirs():
     for path in indexes: # para cada arquivo indexado
         folderPath = arquivo.indexNameToPath(path, indexPath) # pega o path do diretório
 
-        print("Atualizando diretório: "+folderPath)
-        addDir([folderPath], output=False) # atualiza o indice do diretório
+        status = addDir([folderPath], output=False) # atualiza o indice do diretório
+
+        if status == 0: # o diretório não existe/mudou de nome
+            print("-"*70)
+            print("O diretório ({}) não existe ou mudou de nome.".format(folderPath))
+            print("Você pode adicionar o diretório com a opção --addDir")
+            print("Ou você pode remover o diretório com a opção --rmvDir")
+            print("Um exemplo de caminho válido: C:\\Users\\Antonio\\Documents\\pasta")
+            print("-"*70)
+        else:
+            print("Diretório atualizado: "+folderPath)
     
 '''
     Função que remove um diretório do indice
@@ -117,7 +128,6 @@ def listDirs():
     indexes = arquivo.getFolderFilesPath(indexPath)
     for index in indexes:
         path = arquivo.indexNameToPath(index, indexPath)
-
         print(path)
 
 '''
@@ -157,7 +167,8 @@ def search(args):
         dicionario = arquivo.indexFileToDict(path) # transforma o arquivo do indice em um dicionario
         for word, lista in dicionario.items(): # para cada (termo, ocorrencias) do dicionario
             if word in reversedIndex: # se a palavra já existir no dicionario invertido
-                reversedIndex[word].append(*lista) # adiciona a ocorrencia na lista
+                reversedIndex[word] += lista # adiciona a lista de ocorrencias
+                # adiciona a ocorrencia na lista
             else:
                 reversedIndex[word] = lista # se a palavra não existir, adiciona a palavra e a ocorrencia na lista
 
