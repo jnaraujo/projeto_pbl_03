@@ -9,6 +9,9 @@ def doesIndexFolderExists(indexPath): # verifica se o diretorio de index existe
 def doesPathExists(path): # verifica se o caminho existe
     return os.path.exists(path) and not os.path.isfile(path) # se o caminho existe e não é um arquivo
 
+def doesFileExists(path): # verifica se o arquivo existe
+    return os.path.exists(path) and os.path.isfile(path) # se o caminho existe e é um arquivo
+
 def getFolderFilesPath(path): # retorna todos os arquivos de um diretorio
     return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))] # retorna todos os arquivos de um diretorio
 
@@ -17,7 +20,10 @@ def getMainPath(): # retorna o caminho do diretorio principal
 
 def readFile(path): # le um arquivo e retorna o texto
     with open(path, "r", encoding="utf-8") as f: # abre o arquivo
-        return f.read() # retorna o texto
+        try:
+            return f.read() # le o arquivo e retorna o texto
+        except UnicodeDecodeError: # se o arquivo nao for um arquivo de texto
+            return ""
 
 def sanitize(text): # remove caracteres especiais
     stopChars = list("?!.,;:()[]{}<>\"'`´") # caracteres que não devem ser considerados

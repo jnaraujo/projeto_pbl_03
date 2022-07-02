@@ -69,7 +69,35 @@ def updateDirs():
             print("-"*70)
         else:
             print("Diretório atualizado: "+folderPath)
-    
+
+def showIndex(args):
+    folderPath = " ".join(args) # pega o path do diretório
+    indexFileName = folderPath.replace("\\", "__").replace(":", "__")+".txt" # nome do arquivo de indice
+
+    folderIndexPath = os.path.join(indexPath, indexFileName)
+
+    if not arquivo.doesFileExists(folderIndexPath): # verifica se o caminho existe
+        print("O diretório informado não está no índice.")
+        print("Verifique se o caminho passado está correto e tente novamente.")
+        print("Você pode adicionar o diretório com a opção --addDir")
+        print("Um exemplo de caminho válido: C:\\Users\\Antonio\\Documents\\pasta")
+        return
+
+    print("----------- Índice do diretório -----------")
+    indexes = arquivo.indexFileToDict(folderIndexPath) # pega o dicionário do arquivo de indice
+
+    for word, files in indexes.items():
+        print(word, "> " ,end="")
+        contador = 0
+        for file, count in files:
+            filename = file.split("\\")[-1]
+            if contador == 0:
+                print("{} ({}x)".format(filename, count), end="")
+            else:
+                print(", {} ({}x)".format(filename, count), end="")
+            contador+=1
+        print()
+
 '''
     Função que remove um diretório do indice
 '''
@@ -123,16 +151,17 @@ def removeFile(args):
     print("O arquivo informado não está no indice.")
     print("Verifique se o caminho passado está correto e tente novamente.")
     print("Você pode verificar todos os diretórios no indice com a opção --listDirs")
+
 def listDirs():
     print("----------- Lista de Diterórios -----------")
-    indexes = arquivo.getFolderFilesPath(indexPath)
-    if len(indexes) == 0:
+    indexes = arquivo.getFolderFilesPath(indexPath) # pega todos os arquivos indexados
+    if len(indexes) == 0: # se não houver arquivos indexados
         print("Não há diretórios indexados.")
         print("Você pode adicionar diretórios com a opção --addDir")
         return
-    for index in indexes:
-        path = arquivo.indexNameToPath(index, indexPath)
-        print(path)
+    for index in indexes: # para cada arquivo indexado
+        path = arquivo.indexNameToPath(index, indexPath) # pega o path do diretório
+        print(path) # imprime o path do diretório
 
 '''
     Função que retorna a lista de aquivos indexados
@@ -214,6 +243,8 @@ def handleArgs(args):
         return removeDir(args[1:]) 
     elif args[0] == '--rmvFile': # remove um arquivo do indice
         return removeFile(args[1:])
+    elif args[0] == '--showIndex': # mostra o indice do diretório
+        return showIndex(args[1:])
     elif args[0] == '--search': # busca por palavras no indice
         return search(args[1:])
     else:

@@ -3,6 +3,7 @@ Uso
 
 Opções
     --addDir <caminho>      Adiciona um diretório ao índice
+    --showIndex <caminho>   Mostra todos os índices de um diretório
 
     --rmvDir <caminho>      Remove um diretório ao índice
     --rmvFile <caminho>     Remove um arquivo do índice
