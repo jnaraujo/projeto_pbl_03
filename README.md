@@ -1,5 +1,7 @@
 # Sistema de busca e indexamento de documentos
 
+Projeto criado como terceira avaliação da disciplina de MI de Algoritmos da Universidade Estadual de Feira de Santana.
+
 ## 🚀 Rodando localmente
 
 1; Clone o projeto
