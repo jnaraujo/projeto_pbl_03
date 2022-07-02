@@ -1,5 +1,5 @@
 um [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 2)]
-belo [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 1), ('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\oi.txt', 2)]
+belo [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 1)]
 dia [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 1)]
 jacare [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 3)]
 chegou [('D:\\Users\\Jônatas Araújo\\Google Drive\\Programming\\Projects\\_faculdade\\pbl\\algoritmos\\arquivos2\\hdaushidahsd.txt', 1)]

@@ -5,7 +5,6 @@ def doesIndexFolderExists(indexPath): # verifica se o diretorio de index existe
     if not doesPathExists(indexPath):
         os.makedirs(indexPath)
 
-
 def doesPathExists(path): # verifica se o caminho existe
     return os.path.exists(path) and not os.path.isfile(path) # se o caminho existe e não é um arquivo
 
@@ -95,7 +94,9 @@ def sortIndex(arr): # ordena um array de arquivos
 def removeIndexPath(folderPath, indexPath): # remove o caminho do index do caminho do diretorio
     filename = folderPath.replace("\\", "__").replace(":", "__")+".txt" # troca os caracteres especiais
     path = indexPath+filename # cria o caminho do arquivo
-    if not doesPathExists(path): # se o arquivo nao existe
+
+
+    if not doesFileExists(path): # se o arquivo nao existe
         return False 
 
     os.remove(path) # remove o arquivo

@@ -4,7 +4,7 @@
 
     Autor: Jônatas Araújo Silva Santos
     Componente Curricular: Algoritmos I
-    Concluido em: 30/06/2022
+    Concluido em: 02/07/2022
     Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
     trecho de código de outro colega ou de outro autor, tais como provindos de livros e
     apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código de
