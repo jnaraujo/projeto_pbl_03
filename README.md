@@ -42,6 +42,6 @@ jacaré -> /arquivos/animais.txt ; /notas/brasil.txt
 
 Nesse exemplo, a palavra `jacaré` aparece em dois arquivos (animais.txt e brasil.txt).
 
-Isso permite que a busca de palavras seja muito rápida. Por outro lado, a escrita pode se tornar lenta. Isso porque para escrever o índice invertido é necessário transformar o conteúdo do arquivo de texto em uma lista de palavras. Desse modo, em um diretório com milhares de arquivos, o sistema irá passar por todos eles - até mesmo por arquivos que não contenham a palavra.
+Isso permite que a busca de palavras seja muito rápida. Por outro lado, a escrita pode se tornar lenta. Isso porque para escrever o índice invertido é necessário transformar o conteúdo do arquivo de texto em uma lista de palavras. Desse modo, em um diretório com milhares de arquivos, o sistema irá passar por todos eles.
 
 Como consequência, o arquivo de índice criado cresce de acordo com o tamanho do diretório. A depender do tamanho do diretório original, o índice invertido pode ser até mesmo maior - isso porque é necessário salvar, além da palavra, o caminho do arquivo e quantidade de vezes que a palavra aparece.
