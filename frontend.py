@@ -15,6 +15,9 @@ HELP = ""
 def addDir(folderPath, output=True):
     folderPath = " ".join(folderPath) # pega o path do diretório
 
+    # if folderPath.startswith("."): # se for um caminho relativo
+    #     folderPath = arquivo.relativePathToAbsolute(folderPath) # converte o caminho relativo para absoluto
+
     if not arquivo.doesPathExists(folderPath): # se o caminho não existe
         if output==True: # se for para imprimir na tela
             print("O diretório informado não existe.")
@@ -42,6 +45,7 @@ def addDir(folderPath, output=True):
 
     if output==True: # se for para imprimir na tela
         print("Diretório adicionado com sucesso!")
+        print("Caminho: "+folderPath)
     return 1
 
 '''

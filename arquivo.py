@@ -5,6 +5,9 @@ def doesIndexFolderExists(indexPath): # verifica se o diretorio de index existe
     if not doesPathExists(indexPath):
         os.makedirs(indexPath)
 
+def relativePathToAbsolute(path): # retorna o caminho absoluto de um caminho relativo
+    return os.path.abspath(path)
+
 def doesPathExists(path): # verifica se o caminho existe
     return os.path.exists(path) and not os.path.isfile(path) # se o caminho existe e não é um arquivo
 
@@ -12,7 +15,7 @@ def doesFileExists(path): # verifica se o arquivo existe
     return os.path.exists(path) and os.path.isfile(path) # se o caminho existe e é um arquivo
 
 def getFolderFilesPath(path): # retorna todos os arquivos de um diretorio
-    return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))] # retorna todos os arquivos de um diretorio
+    return [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and f.endswith(".txt")] # retorna todos os arquivos de um diretorio
 
 def getMainPath(): # retorna o caminho do diretorio principal
     return os.path.abspath(os.getcwd())
