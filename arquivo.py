@@ -106,7 +106,7 @@ def removeIndexPath(folderPath, indexPath): # remove o caminho do index do camin
     return True
 
 
-def indexNameToPath(name, indexPath): 
+def indexNameToPath(name, indexPath, preserveRelative=False): 
 
     if not str(indexPath).endswith("\\"): # se o caminho nao termina com um \
         indexPath += "\\" # adiciona um \ no final do caminho
@@ -115,6 +115,11 @@ def indexNameToPath(name, indexPath):
 
     path = path.replace("__", "\\") # troca os carecteres especiais
     path = path.split("\\") # divide o caminho em um array
+
+    if path[0].startswith("."):
+        if preserveRelative: # se deve manter o caminho relativo
+            return "\\".join(path)
+        return relativePathToAbsolute("\\".join(path))
 
     path[path.index("")] = ":" # no primeiro espaço em branco troca o caractere por :
 

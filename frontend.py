@@ -60,7 +60,7 @@ def updateDirs():
         return
 
     for path in indexes: # para cada arquivo indexado
-        folderPath = arquivo.indexNameToPath(path, indexPath) # pega o path do diretório
+        folderPath = arquivo.indexNameToPath(path, indexPath, preserveRelative=True) # pega o path do diretório
 
         status = addDir([folderPath], output=False) # atualiza o indice do diretório
 
@@ -189,7 +189,10 @@ def listFiles():
         return
     
     for file in files: # para cada arquivo indexado
-        print(file)
+        if(file.startswith(".")):
+            print(arquivo.relativePathToAbsolute(file))
+        else:
+            print(file)
 
 '''
     Função que busca por palavras no indice
